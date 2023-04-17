@@ -12,3 +12,4 @@ Enviroment4: RData04RegressionGrafBeginnArbeitstabellenLänder
 Part05PrognoseDeskriptiveStatistik (weiteres Dataprocessing, Berechnung der Prognose für 2 weitere Jahre für jeden Parameter, Neue Zeitreihe mit Prognosedaten)
 Enviroment05: RData_LänderFertig
 Ländertabellen: für alle Top 10 Länder wurden die Tabellen erstellt pprozessiert
+Preisberechnung.rmd
