@@ -1,0 +1,152 @@
+---
+title: "Anhang 2. Projekt DLBDBSC01"
+date: 2023-04-12
+output: html_notebook
+---
+Deskriptive Statistik
+Ermitteln der empirischen Verteilungsfunktion: Test auf Normalverteilung der Variablen "SpendingProPerson"
+```{r}
+#Mittelwerte und Standardabweichungen berechnen
+Mittelwert_Spending<-mean(Arbeitstabelle02$SpendingProPerson)
+Standardabweichung_Spending<-sd(Arbeitstabelle02$SpendingProPerson)
+Mittelwert_Spending
+Standardabweichung_Spending
+#Q-Q Plot erstellen
+qqnorm(Arbeitstabelle02$SpendingProPerson)
+qqline(Arbeitstabelle02$SpendingProPerson)
+```
+Ermitteln der empirischen Verteilungsfunktion: Test auf Normalverteilung der Variablen "InternetAnteil"
+```{r}
+Mittelwert_Internet<-mean(Arbeitstabelle02$InternetAnteil)
+Standardabweichung_Internet<-sd(Arbeitstabelle02$InternetAnteil)
+Mittelwert_Internet
+Standardabweichung_Internet
+#Q-Q Plot erstellen
+qqnorm(Arbeitstabelle02$InternetAnteil)
+qqline(Arbeitstabelle02$InternetAnteil)
+```
+
+```{r}
+# Erstellen eines Datensatzes mit zwei Variablen
+set.seed(123)
+data <- data.frame(
+ SpendingVar = rnorm(100, mean = Mittelwert_Spending , sd = Standardabweichung_Spending),
+  InternetVar = rnorm(100, mean = Mittelwert_Internet, sd = Standardabweichung_Internet))
+# Shapiro-Wilk-Test für jede Variable
+shapiro.test(data$SpendingVar)
+shapiro.test(data$InternetVar)
+```
+
+Schiefe und Kurtosis der Variable "InternetAnteil" berechnen, um sie in Log zu transformieren (wegen nicht-normalverteilte Variable)
+```{r}
+# Das Paket "e1071" laden
+# install.packages("e1071")
+library(e1071)
+# Berechnen der Schiefe und Kurtosis der Variable "InternetAnteil"
+Schiefe_InternetAnteil<-skewness(Arbeitstabelle02$InternetAnteil)
+Kurtosis_InternetAnteil<-kurtosis(Arbeitstabelle02$InternetAnteil)
+Schiefe_InternetAnteil
+Kurtosis_InternetAnteil
+```
+Wenn Schiefe oder Kurtosis negativ sind, keine Log-Transformation möglich
+Wurzel- Transformation testen (für rechtsschief verteilte Variable), anschließend auf Normalverteilung testen
+```{r}
+# Erstellen einer Wurzel-transformierten Variable
+Arbeitstabelle02$sqrt_InternetAnteil <- sqrt(Arbeitstabelle02$InternetAnteil)
+# Shapiro-Wilk Test auf Normalverteilung für die neue Variable
+# Berechnen der Kenngrößen für den Shapiro-Wilk Test
+Mittelwert_sqrt_Internet<- mean(Arbeitstabelle02$sqrt_InternetAnteil)
+Standardabweichung_sqrt_Internet<-sd(Arbeitstabelle02$sqrt_InternetAnteil)
+Mittelwert_sqrt_Internet
+# Erstellen eines Beispiel-Datensatzes mit 100 Zufallszahlen
+set.seed(123)
+data01 <- rnorm(100, mean = Mittelwert_sqrt_Internet, sd = Standardabweichung_sqrt_Internet)
+# Shapiro-Wilk-Test 
+shapiro.test(data01)
+# Q-Q Plot der transformierten Variablen
+qqnorm(Arbeitstabelle02$sqrt_InternetAnteil)
+qqline(Arbeitstabelle02$sqrt_InternetAnteil)
+```
+Kontrolle der neu erstellten Variablen
+```{r}
+class(Arbeitstabelle02$sqrt_InternetAnteil)
+```
+Problematik:
+Variable "SpendingProPerson" wurde als normalverteilt bewertet, obwohl die Standardabweichung höher als Mittelwert ist, beim Q-Q Plot ist keine einheitliche Korrelation der Quantile zu beobachten, daher wird die Transformation überprüft.
+```{r}
+# install.packages("e1071")
+library(e1071)
+Schiefe_Spending <- skewness(Arbeitstabelle02$SpendingProPerson)
+Schiefe_Spending 
+Kurtosis_Spending <- kurtosis(Arbeitstabelle02$SpendingProPerson)
+Kurtosis_Spending
+```
+Log-Transformation der Variable "SpendingProPerson" möglich
+```{r}
+Arbeitstabelle02$log_SpendingProPerson <- log(Arbeitstabelle02$SpendingProPerson)
+Arbeitstabelle02
+```
+Test auf Normalverteilung
+```{r}
+#Mittelwerte und Standardabweichungen berechnen
+Mittelwert_log_Spending<-mean(Arbeitstabelle02$log_SpendingProPerson)
+Standardabweichung_log_Spending<-sd(Arbeitstabelle02$log_SpendingProPerson)
+Mittelwert_log_Spending
+Standardabweichung_log_Spending
+# Erstellen eines Beispiel-Datensatzes mit 100 Zufallszahlen
+set.seed(123)
+data02 <- rnorm(100, mean = Mittelwert_log_Spending, sd = Standardabweichung_log_Spending)
+# Shapiro-Wilk Test auf Normalverteilung
+shapiro.test(data02)
+#Q-Q Plot erstellen
+qqnorm(Arbeitstabelle02$log_SpendingProPerson)
+qqline(Arbeitstabelle02$log_SpendingProPerson)
+```
+Korrelationskoeffizient nach Pearson für normalverteile Variablen berechnen
+```{r}
+# Korrelationskoeffizienten berechnen
+Korr_Spending_Internet_Pearson<- cor(Arbeitstabelle02$log_SpendingProPerson, Arbeitstabelle02$sqrt_InternetAnteil) # nach Spearman (für normalverteilte Daten, monoton, N>10)
+Korr_Spending_Internet
+```
+Inferenzstatistik
+Zusammenhang überprüfen zwischen Spending pro Einwohner und Internet-Anteil (ist keine Aufgabestellung)
+```{r}
+cor.test(Arbeitstabelle02$log_SpendingProPerson, Arbeitstabelle02$sqrt_InternetAnteil)
+```
+Inferenzstatistik: Zweifaktorielle Varianzanalyse
+Fragestellung: Korrelieren die Anteile der Breitbandzugänge mit Haushaltsausgaben (Variable "InternetAnteil" und "SpendingProPerson")?
+```{r}
+x <- Arbeitstabelle02$InternetAnteil
+y <- Arbeitstabelle02$SpendingProPerson
+plot(y,x, pch = 19, xlab = "SpendingProPerson", ylab = "Internetanteil", col = "grey")
+# Korrelationskoeffizienten berechnen
+Korr_Spending_Internet<- cor(Arbeitstabelle02$SpendingProPerson, Arbeitstabelle02$InternetAnteil, method = "spearman") # nach Spearman (für nicht normalverteilte Daten, monoton, N>10)
+Korr_Spending_Internet
+```
+Frage: Korrelieren die Anteile der Breitbandzugänge mit Haushaltsausgaben durch die Zeit?
+Partielle Korrelation berechnen
+```{r}
+# Das Paket "ppcor" installieren
+# install.packages(ppcor)
+# Das Paket "ppcor" laden
+library(ppcor)
+# eine Matrix aus nummerischen Variablen erstellen
+PartielleKorrelation_Time <- as.matrix(Arbeitstabelle02[c("sqrt_InternetAnteil", "log_SpendingProPerson", "ZeitNum")])
+# Partielle Korrelation berechnen
+pcor(PartielleKorrelation_Time, method="pearson")
+```
+Fragestellung: Korrelieren die Anteile der Breitbandzugänge mit Haushaltsausgaben durch die Location?
+```{r}
+# Das Paket "ppcor" laden
+library(ppcor)
+# eine Matrix aus nummerischen Variablen erstellen
+PartielleKorrelation_Location <- as.matrix(Arbeitstabelle02[c("sqrt_InternetAnteil", "log_SpendingProPerson", "LocationNum")])
+# Partielle Korrelation berechnen
+pcor(PartielleKorrelation_Location, method="pearson")
+```
+Ergebnis: 
+Die Variablen SpendingProPerson und InternetAnteil korrelieren nicht
+Die Variablen SpendingProPerson und InternetAnteil unter Berücksichtigung der Zeit korrelieren nicht
+Die Variablen SpendingProPerson und InternetAnteil unter Berücksichtigung der Location korrelieren nicht
+Die Variablen SpendingProPerson und InternetAnteil sind nicht zusammenhängend
+

@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land FIN erstellen
+```{r}
+glm.FIN_Inend<-glm(Arbeitstabelle_FIN_In$sqrt_InternetAnteil~Arbeitstabelle_FIN_In$ZeitNum)
+plot( Arbeitstabelle_FIN_In$ZeitNum,Arbeitstabelle_FIN_In$sqrt_InternetAnteil)
+abline(glm.FIN_Inend)
+summary(glm.FIN_Inend)
+segments(Arbeitstabelle_FIN_In$ZeitNum,fitted(glm.FIN_Inend), Arbeitstabelle_FIN_In$ZeitNum,Arbeitstabelle_FIN_In$sqrt_InternetAnteil)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+FINsqrt_InternetAnteil_18<-7.97+0.13*18
+new_row_sp18<-data.frame(ZeitNum=18, sqrt_InternetAnteil=FINsqrt_InternetAnteil_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_FIN_In<-rbind(Arbeitstabelle_FIN_In, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+FINsqrt_InternetAnteil_19<-7.97+0.13*19
+new_row_sp19<-data.frame(ZeitNum=19, sqrt_InternetAnteil=FINsqrt_InternetAnteil_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_FIN_In<-rbind(Arbeitstabelle_FIN_In, new_row_sp19)
+```
+Neue Variable "InternetAnteil" aus der wurzeltransformierten Variable "sqrt_InternetAnteil" berechnen
+```{r}
+Arbeitstabelle_FIN_In$InternetAnteil <- Arbeitstabelle_FIN_In$sqrt_InternetAnteil*Arbeitstabelle_FIN_In$sqrt_InternetAnteil
+```

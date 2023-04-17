@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land FIN erstellen
+```{r}
+glm.FIN_Spend<-glm(Arbeitstabelle_FIN_Sp$SpendingProPerson~Arbeitstabelle_FIN_Sp$ZeitNum)
+plot( Arbeitstabelle_FIN_Sp$ZeitNum,Arbeitstabelle_FIN_Sp$SpendingProPerson)
+abline(glm.FIN_Spend)
+summary(glm.FIN_Spend)
+segments(Arbeitstabelle_FIN_Sp$ZeitNum,fitted(glm.FIN_Spend), Arbeitstabelle_FIN_Sp$ZeitNum,Arbeitstabelle_FIN_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+FINSpendingProPerson_18<-672.87+32.77*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=FINSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_FIN_Sp<-rbind(Arbeitstabelle_FIN_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+FINSpendingProPerson_19<-672.87+32.77*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=FINSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_FIN_Sp<-rbind(Arbeitstabelle_FIN_Sp, new_row_sp19)
+```

@@ -1,0 +1,75 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Ersatzcode
+
+```{r}
+library(dplyr)
+FinalArbeitstabelle <- left_join( Arbeitstabelle_AUT_In, Arbeitstabelle_BEL_In,  Arbeitstabelle_top_10, by = "ZeitNum") 
+
+
+Arbeitstabelle_DNK_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=13 & Arbeitstabelle_top_10$LocationNum>12, c("ZeitNum","SpendingProPerson")]
+```
+
+Hinzufügen einer Zeile am Anfang der Dataframe beim Land FRA
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_ersteZeile <- data.frame(ZeitNum = numeric(1), SpendingProPerson = numeric(1))
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_Sp <- rbind(data.frame(ZeitNum = 1, SpendingProPerson = NA), Arbeitstabelle_FRA_Sp)
+```
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_ersteZeile_2 <- data.frame(ZeitNum = numeric(1), sqrt_InternetAnteil = numeric(1))
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_In <- rbind(data.frame(ZeitNum = 1, sqrt_InternetAnteil = NA), Arbeitstabelle_FRA_In)
+```
+Berechnen des fehlenden Meßwertes zum ZeiNum =16 laut Lm-Parametern
+```{r}
+FRASpendingProPerson_16<-7305.28+253.17*16
+FRASpendingProPerson_16
+```
+Berechnen des fehlenden Meßwertes zum ZeiNum =16 laut Lm-Parametern
+```{r}
+FRAsqrt_InternetAnteil_16 <- 7.15+0.17*16
+FRAsqrt_InternetAnteil_16
+```
+
+Hinzufügen einer Zeile 16 der Dataframe "Arbeiitstabelle_FRA_Sp" 
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_16Zeile1 <- data.frame(ZeitNum = 16, SpendingProPerson = 11356)
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_Sp <- rbind(Arbeitstabelle_FRA_Sp[1:15,],FRA_16Zeile1, Arbeitstabelle_FRA_Sp[16:19,])
+```
+
+Hinzufügen einer Zeile 16 der Dataframe "Arbeitstabelle_FRA_In" 
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_16Zeile2 <- data.frame(ZeitNum = 16, sqrt_InternetAnteil = 9.87)
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_In <- rbind(Arbeitstabelle_FRA_In[1:15,],FRA_16Zeile2, Arbeitstabelle_FRA_In[16:19,])
+```
+
+
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_ersteZeile_4 <- data.frame(ZeitNum = numeric(16), sqrt_InternetAnteil = numeric(16))
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_In <- rbind(data.frame(ZeitNum = 16, sqrt_InternetAnteil = NA), Arbeitstabelle_FRA_In)
+```
+
+```{r}
+Arbeitstabelle_FRA_In <- Arbeitstabelle_FRA_In[-20,]
+```
+
+```{r}
+Arbeitstabelle_FRA_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=19 & Arbeitstabelle_top_10$LocationNum>18, c("ZeitNum","sqrt_InternetAnteil")]
+```
+
+
+Löschen einer überflüssigen Zeile 18 aus der Tabelle beim Land BEl
+```{r}
+Arbeitstabelle_BEL_In <- Arbeitstabelle_BEL_In[-18,]
+```

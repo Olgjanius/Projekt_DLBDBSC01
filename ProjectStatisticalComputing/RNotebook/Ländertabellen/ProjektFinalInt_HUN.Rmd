@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land HUN erstellen
+```{r}
+glm.HUN_Inend<-glm(Arbeitstabelle_HUN_In$sqrt_InternetAnteil~Arbeitstabelle_HUN_In$ZeitNum)
+plot( Arbeitstabelle_HUN_In$ZeitNum,Arbeitstabelle_HUN_In$sqrt_InternetAnteil)
+abline(glm.HUN_Inend)
+summary(glm.HUN_Inend)
+segments(Arbeitstabelle_HUN_In$ZeitNum,fitted(glm.HUN_Inend), Arbeitstabelle_HUN_In$ZeitNum,Arbeitstabelle_HUN_In$sqrt_InternetAnteil)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+HUNsqrt_InternetAnteil_18<-5.6+0.26*18
+new_row_sp18<-data.frame(ZeitNum=18, sqrt_InternetAnteil=HUNsqrt_InternetAnteil_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_HUN_In<-rbind(Arbeitstabelle_HUN_In, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+HUNsqrt_InternetAnteil_19<-5.6+0.26*19
+new_row_sp19<-data.frame(ZeitNum=19, sqrt_InternetAnteil=HUNsqrt_InternetAnteil_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_HUN_In<-rbind(Arbeitstabelle_HUN_In, new_row_sp19)
+```
+Neue Variable "InternetAnteil" aus der wurzeltransformierten Variable "sqrt_InternetAnteil" berechnen
+```{r}
+Arbeitstabelle_HUN_In$InternetAnteil <- Arbeitstabelle_HUN_In$sqrt_InternetAnteil*Arbeitstabelle_HUN_In$sqrt_InternetAnteil
+```

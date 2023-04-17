@@ -1,0 +1,81 @@
+---
+title: "Anhang 1. Projekt DLBDBSC01"
+date: 2023-04-12
+output: html_notebook
+---
+Anhang 1. Projekt DLBDBSC01
+
+Kontrolle der Variablen
+```{r}
+class(InternetAccess)
+class(HouseholdSpending)
+class(PopulationSize)
+summary(InternetAccess)
+summary(HouseholdSpending)
+summary(PopulationSize)
+```
+Die relevante Spalten als Vektor/Datentyp speichern
+```{r}
+Location<-as.factor(InternetAccess$LOCATION)
+Zeit<-as.factor(InternetAccess$TIME)
+InternetAnteil<-as.numeric(InternetAccess$Value)
+Internetaccess01<-cbind.data.frame(Location, Zeit, InternetAnteil)
+Internetaccess01
+class(Internetaccess01)
+summary(Internetaccess01)
+```
+```{r}
+Location<-as.factor(HouseholdSpending$LOCATION)
+Zeit<-as.factor(HouseholdSpending$TIME)
+SpendingAusgabenMlnUsd<-as.numeric(HouseholdSpending$Value/4)#pro Person berechnen
+HouseholdSpending01<-cbind.data.frame(Location, Zeit, SpendingAusgabenMlnUsd)
+HouseholdSpending01
+class(HouseholdSpending01)
+summary(HouseholdSpending01)
+```
+```{r}
+Location<-as.factor(PopulationSize$LOCATION)
+PopulationGroesse<-as.numeric(PopulationSize$Value)
+PopulationSize01<-cbind.data.frame(Location, PopulationGroesse)
+PopulationSize01
+class(PopulationSize01)
+summary(PopulationSize01)
+```
+Tabelle erstellen aus HouseholdSpending01 mit PopulationSize01
+```{r}
+library(dplyr)
+HouseholdSpendingNorm <- left_join(HouseholdSpending01, PopulationSize01, by = "Location") 
+HouseholdSpendingNorm
+```
+Nullwerte der Variable "Populationsgroesse" ausschließen
+```{r}
+HouseholdSpendingNorm01<-HouseholdSpendingNorm[HouseholdSpendingNorm$PopulationGroesse>0, c("Location","Zeit", "SpendingAusgabenMlnUsd", "PopulationGroesse")]
+HouseholdSpendingNorm01
+```
+NA-Werte der Variable "Populationsgroesse" ausschließen
+```{r}
+HouseholdSpendingNorm02 <- na.exclude(HouseholdSpendingNorm01)
+HouseholdSpendingNorm02
+```
+Ausgaben auf Populationsgroesse pro Land normalisiseren
+```{r}
+SpendingProPerson<-HouseholdSpendingNorm02$SpendingAusgabenMlnUsd/HouseholdSpendingNorm02$PopulationGroesse
+HouseholdSpendingNorm03<- cbind.data.frame(HouseholdSpendingNorm02, SpendingProPerson)
+HouseholdSpendingNorm03
+```
+Zwei neue Arbeitstabellen "Arbeitstabelle01" und "Arbeitstabelle02" aus 2 Tabellen: "HouseholdSpendingNorm03" und InternetAccess01" erstellen
+```{r}
+Arbeitstabelle01<-HouseholdSpendingNorm03
+```
+
+```{r}
+library(dplyr)
+Arbeitstabelle <- left_join(HouseholdSpendingNorm03, Internetaccess01, by = c("Location", "Zeit"))
+Arbeitstabelle
+```
+NA-Werte ausschließen
+```{r}
+Arbeitstabelle02<-na.exclude(Arbeitstabelle)
+Arbeitstabelle02
+```
+Ergebnis: Arbeitstabelle01 und Arbeitstabelle02 erstellt

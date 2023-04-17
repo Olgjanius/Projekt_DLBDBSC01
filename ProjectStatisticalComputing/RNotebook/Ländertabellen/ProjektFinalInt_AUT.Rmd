@@ -1,0 +1,32 @@
+---
+title: "Anhang 5. Projekt DLBDBSC01"
+date: 2023-04-12
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land AUT erstellen
+```{r}
+glm.AUT_Inend<-glm(Arbeitstabelle_AUT_In$sqrt_InternetAnteil~Arbeitstabelle_AUT_In$ZeitNum)
+plot( Arbeitstabelle_AUT_In$ZeitNum,Arbeitstabelle_AUT_In$sqrt_InternetAnteil)
+abline(glm.AUT_Inend)
+summary(glm.AUT_Inend)
+segments(Arbeitstabelle_AUT_In$ZeitNum,fitted(glm.AUT_Inend), Arbeitstabelle_AUT_In$ZeitNum,Arbeitstabelle_AUT_In$sqrt_InternetAnteil)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+AUTsqrt_InternetAnteil_18<-7.4+0.15*18
+new_row_sp18<-data.frame(ZeitNum=18, sqrt_InternetAnteil=AUTsqrt_InternetAnteil_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_AUT_In<-rbind(Arbeitstabelle_AUT_In, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+AUTsqrt_InternetAnteil_19<-7.4+0.15*19
+new_row_sp19<-data.frame(ZeitNum=19, sqrt_InternetAnteil=AUTsqrt_InternetAnteil_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_AUT_In<-rbind(Arbeitstabelle_AUT_In, new_row_sp19)
+```
+Neue Variable "InternetAnteil" aus der wurzeltransformierten Variable "sqrt_InternetAnteil" berechnen
+```{r}
+Arbeitstabelle_AUT_In$InternetAnteil <- Arbeitstabelle_AUT_In$sqrt_InternetAnteil*Arbeitstabelle_AUT_In$sqrt_InternetAnteil
+```
+

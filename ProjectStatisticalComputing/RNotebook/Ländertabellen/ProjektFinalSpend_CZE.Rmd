@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land CZE erstellen
+```{r}
+glm.CZE_Spend<-glm(Arbeitstabelle_CZE_Sp$SpendingProPerson~Arbeitstabelle_CZE_Sp$ZeitNum)
+plot( Arbeitstabelle_CZE_Sp$ZeitNum,Arbeitstabelle_CZE_Sp$SpendingProPerson)
+abline(glm.CZE_Spend)
+summary(glm.CZE_Spend)
+segments(Arbeitstabelle_CZE_Sp$ZeitNum,fitted(glm.CZE_Spend), Arbeitstabelle_CZE_Sp$ZeitNum,Arbeitstabelle_CZE_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+CZESpendingProPerson_18<-2058.956+116.311*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=CZESpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_CZE_Sp<-rbind(Arbeitstabelle_CZE_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+CZESpendingProPerson_19<-2058.956+116.311*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=CZESpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_CZE_Sp<-rbind(Arbeitstabelle_CZE_Sp, new_row_sp19)
+```

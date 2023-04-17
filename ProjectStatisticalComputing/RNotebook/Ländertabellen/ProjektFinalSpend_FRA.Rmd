@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land FRA erstellen
+```{r}
+glm.FRA_Spend<-glm(Arbeitstabelle_FRA_Sp$SpendingProPerson~Arbeitstabelle_FRA_Sp$ZeitNum)
+plot( Arbeitstabelle_FRA_Sp$ZeitNum,Arbeitstabelle_FRA_Sp$SpendingProPerson)
+abline(glm.FRA_Spend)
+summary(glm.FRA_Spend)
+segments(Arbeitstabelle_FRA_Sp$ZeitNum,fitted(glm.FRA_Spend), Arbeitstabelle_FRA_Sp$ZeitNum,Arbeitstabelle_FRA_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+FRASpendingProPerson_18<-7305.28+253.17*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=FRASpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_FRA_Sp<-rbind(Arbeitstabelle_FRA_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+FRASpendingProPerson_19<-7305.28+253.17*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=FRASpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_FRA_Sp<-rbind(Arbeitstabelle_FRA_Sp, new_row_sp19)
+```

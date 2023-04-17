@@ -1,0 +1,27 @@
+---
+title: "Anhang 7. Projekt DLBDBSC01"
+date: 2023-04-17
+output: html_notebook
+---
+
+```{r}
+summary(PrognoseTabelleIn)
+class(PrognoseTabelleIn)
+```
+Berechnung des Preises für den Top-Kandidaten
+```{r}
+# Spending Werte für beiden Länder
+FraSp2023 <- 12115 #Spending 2023 FRA
+DeuSp2023 <- 10718 #Spending 2023 DEU
+FaktorDiff <- FraSp2023/DeuSp2023 #Faktor 
+FaktorDiff
+PreisIstDeu <- 12 #Ist-Preis DEU
+PreisSollFra <- PreisIstDeu*FaktorDiff
+PreisSollFra
+SteigFra <- 7305
+SteigDeu <- 5883
+SteigungsDiff <- SteigFra/SteigDeu
+SteigungsDiff
+Endpreis <- PreisSollFra*SteigungsDiff
+Endpreis
+```

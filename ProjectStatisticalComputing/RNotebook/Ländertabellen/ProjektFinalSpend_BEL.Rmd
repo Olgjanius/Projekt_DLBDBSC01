@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land BEL erstellen
+```{r}
+glm.BEL_Spend<-glm(Arbeitstabelle_BEL_Sp$SpendingProPerson~Arbeitstabelle_BEL_Sp$ZeitNum)
+plot( Arbeitstabelle_BEL_Sp$ZeitNum,Arbeitstabelle_BEL_Sp$SpendingProPerson)
+abline(glm.BEL_Spend)
+summary(glm.BEL_Spend)
+segments(Arbeitstabelle_BEL_Sp$ZeitNum,fitted(glm.BEL_Spend), Arbeitstabelle_BEL_Sp$ZeitNum,Arbeitstabelle_BEL_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+BELSpendingProPerson_18<-481.49+24.48*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=BELSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_BEL_Sp<-rbind(Arbeitstabelle_BEL_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+BELSpendingProPerson_19<-481.49+24.48*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=BELSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_BEL_Sp<-rbind(Arbeitstabelle_BEL_Sp, new_row_sp19)
+```

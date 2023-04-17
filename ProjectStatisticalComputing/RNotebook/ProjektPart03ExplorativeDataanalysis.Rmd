@@ -1,0 +1,29 @@
+---
+title: "Anhang 3. Projekt DLBDBSC01"
+date: 2023-04-12
+output: html_notebook
+---
+Deskriptive Statistik Arbeitstabelle01: Kennzahlen
+```{r}
+summary(Arbeitstabelle01)
+summary(Arbeitstabelle02)
+```
+Erstellen einer nummerischen Zeit-Variable und Location-Variable
+```{r}
+Arbeitstabelle02$ZeitNum<-as.numeric(Arbeitstabelle02$Zeit)
+Arbeitstabelle02$LocationNum<-as.numeric(Arbeitstabelle02$Location)
+```
+Die Top 10 in Jahr 2021 Länder anzeigen
+```{r}
+Arbeitstabelle2021<-Arbeitstabelle02[Arbeitstabelle02$ZeitNum>16, c("Location", "Zeit", "SpendingProPerson", "InternetAnteil", "sqrt_InternetAnteil", "ZeitNum", "LocationNum")]
+Arbeitstabelle2021
+Arbeitstabelle_top_10_2021 <- head(Arbeitstabelle2021[order(-Arbeitstabelle2021$SpendingProPerson & -Arbeitstabelle2021$InternetAnteil),], 11)
+Arbeitstabelle_top_10_2021
+```
+Neue Arbeitstabelle mit 10 Top-Länder erstellen
+```{r}
+selected_locs <- c(2,3,11,12,13,18,19,21,22,25,28)
+Arbeitstabelle_top_10<-Arbeitstabelle02[Arbeitstabelle02$LocationNum %in% selected_locs, c("Location", "Zeit", "SpendingProPerson", "InternetAnteil", "sqrt_InternetAnteil", "ZeitNum", "LocationNum")]
+Arbeitstabelle_top_10
+```
+Ergebnis: Frage 1 der Aufgabestellung beantwortet, Zeitreihe von den Daten der  Länder, die die höchsten Ausgaben pro Einwohner aufweisen, erstellt

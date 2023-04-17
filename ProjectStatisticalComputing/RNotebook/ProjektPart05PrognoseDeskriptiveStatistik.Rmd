@@ -1,0 +1,139 @@
+---
+title: "Anhang 5. Projekt DLBDBSC01"
+date: 2023-04-12
+output: html_notebook
+---
+Variablen korrigieren
+Beim Land Frankreich gibt es fehlende Werte beim ZeitNum = 1 und ZeitNum =16
+Korrektur
+Hinzufügen einer Zeile am Anfang der Dataframe beim Land FRA
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_ersteZeile <- data.frame(ZeitNum = numeric(1), SpendingProPerson = numeric(1))
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_Sp <- rbind(data.frame(ZeitNum = 1, SpendingProPerson = NA), Arbeitstabelle_FRA_Sp)
+```
+```{r}
+# Erstellen einer Zeile mit drei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_ersteZeile_2 <- data.frame(ZeitNum = numeric(1), sqrt_InternetAnteil = numeric(1), InternetAnteil = numeric(1))
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_In <- rbind(data.frame(ZeitNum = 1, sqrt_InternetAnteil = NA, InternetAnteil = NA), Arbeitstabelle_FRA_In)
+```
+Berechnen des fehlenden Meßwertes zum ZeiNum =16 laut Lm-Parametern
+```{r}
+FRASpendingProPerson_16<-7305.28+253.17*16
+FRASpendingProPerson_16
+```
+Berechnen des fehlenden Meßwertes zum ZeiNum =16 laut Lm-Parametern
+```{r}
+FRAsqrt_InternetAnteil_16 <- 7.15+0.17*16
+FRAsqrt_InternetAnteil_16
+```
+
+Hinzufügen einer Zeile 16 der Dataframe "Arbeiitstabelle_FRA_Sp" 
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_16ZeileSp <- data.frame(ZeitNum = 16, SpendingProPerson = 11356)
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_Sp <- rbind(Arbeitstabelle_FRA_Sp[1:15,],FRA_16ZeileSp, Arbeitstabelle_FRA_Sp[16:19,])
+```
+Löschen einer überflüssigen Zeile 20 aus der Tabelle beim Land FRA
+```{r}
+Arbeitstabelle_FRA_Sp <- Arbeitstabelle_FRA_Sp[-20,]
+```
+Hinzufügen einer Zeile 16 der Dataframe "Arbeiitstabelle_FRA_In" 
+```{r}
+# Erstellen einer Zeile mit zwei Spalten, deren Bezeichnung genau der aus der zu manipulierenden Tabelle entsprechen
+FRA_16ZeileIn <- data.frame(ZeitNum = 16, sqrt_InternetAnteil = 9.78, InternetAnteil = 9.78*9.78)
+# Hinzufügen der erstellten Zeile in die zu manipulierende Tabelle
+Arbeitstabelle_FRA_In <- rbind(Arbeitstabelle_FRA_In[1:15,],FRA_16ZeileIn, Arbeitstabelle_FRA_In[16:19,])
+```
+Löschen einer überflüssigen Zeile 20 aus der Tabelle beim Land FRA
+```{r}
+Arbeitstabelle_FRA_In <- Arbeitstabelle_FRA_In[-20,]
+```
+Neue Variable "Zeit" erstellen
+```{r}
+Zeit_ <- c(2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023)
+Zeit_f<- as.factor(Zeit_)
+```
+Variablen erstellen, Tabelle InternetAnteil mit Prognosedaten erstellen
+```{r}
+Deutschland <- Arbeitstabelle_DEU_Sp$SpendingProPerson
+Österreich <- Arbeitstabelle_AUT_In$SpendingProPerson
+Belgien <- Arbeitstabelle_BEL_In$SpendingProPerson
+Tschechien <- Arbeitstabelle_CZE_In$SpendingProPerson
+Dänemark <- Arbeitstabelle_DNK_In$SpendingProPerson
+Finnland <- Arbeitstabelle_FIN_In$SpendingProPerson
+Frankreich <- Arbeitstabelle_FRA_In$InternetAnteil
+Ungarn <- Arbeitstabelle_HUN_In$InternetAnteil
+Irland <- Arbeitstabelle_IRL_In$InternetAnteil
+Italien <- Arbeitstabelle_ITA_In$InternetAnteil
+```
+
+```{r}
+PrognoseTabelleIn <-cbind(Zeit_, Deutschland, Österreich, Belgien, Tschechien, Dänemark, Finnland, Frankreich, Ungarn, Irland, Italien, Zeit_f)
+PrognoseTabelleIn <- as.data.frame(PrognoseTabelleIn)
+class(PrognoseTabelleIn)
+```
+Variablen erstellen, Tabelle Spending mit Prognosedaten erstellen
+```{r}
+Deutschland_ <- Arbeitstabelle_DEU_Sp$SpendingProPerson
+Österreich_ <- Arbeitstabelle_AUT_Sp$SpendingProPerson
+Belgien_ <- Arbeitstabelle_BEL_Sp$SpendingProPerson
+Tschechien_ <- Arbeitstabelle_CZE_Sp$SpendingProPerson
+Dänemark_ <- Arbeitstabelle_DNK_Sp$SpendingProPerson
+Finnland_ <- Arbeitstabelle_FIN_Sp$SpendingProPerson
+Frankreich_ <- Arbeitstabelle_FRA_Sp$SpendingProPerson
+Ungarn_ <- Arbeitstabelle_HUN_Sp$SpendingProPerson
+Irland_ <- Arbeitstabelle_IRL_Sp$SpendingProPerson
+Italien_ <- Arbeitstabelle_ITA_Sp$SpendingProPerson
+```
+
+```{r}
+PrognoseTabelleSp <-cbind(Zeit_, Deutschland_, Österreich_, Belgien_, Tschechien_, Dänemark_, Finnland_, Frankreich_, Ungarn_, Irland_, Italien_, Zeit_f)
+PrognoseTabelleSp <- as.data.frame(PrognoseTabelleSp)
+class(PrognoseTabelleSp)
+```
+
+Zeitreihe mit Prognose für 2 weitere Jahre Internetanteil
+```{r}
+library(ggplot2)
+library(RColorBrewer)
+
+ggplot(PrognoseTabelleIn, aes(x = Zeit_, col = 1:6))+
+  geom_line(aes(y = Österreich, colour = "Österreich"))+
+  geom_line(aes(y = Deutschland, colour = "Deutschland"))+
+  geom_line(aes(y = Belgien, colour = "Belgien"))+
+  geom_line(aes(y = Tschechien, colour = "Tschechien"))+
+  geom_line(aes(y = Dänemark, colour = "Dänemark"))+
+  geom_line(aes(y = Finnland, colour = "Finnland"))+
+  geom_line(aes(y = Frankreich, colour = "Frankreich"))+
+  geom_line(aes(y = Ungarn, colour = "Ungarn"))+
+  geom_line(aes(y = Irland, colour = "Irland"))+
+  geom_line(aes(y = Italien, colour = "Italien"))+
+labs(x="Zeit", y="Anteil an Internet in %", col="Land")+
+scale_x_continuous(breaks = unique(PrognoseTabelleIn$Zeit_))+
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))  
+```
+Zeitreihe mit Prognose für 2 weitere Jahre SpendingProPerson
+```{r}
+library(ggplot2)
+library(RColorBrewer)
+ggplot(PrognoseTabelleSp, aes(x = Zeit_, col = 1:6))+
+  geom_line(aes(y = Österreich_, colour = "Österreich"))+
+  geom_line(aes(y = Deutschland_, colour = "Deutschland"))+
+  geom_line(aes(y = Belgien_, colour = "Belgien"))+
+  geom_line(aes(y = Tschechien_, colour = "Tschechien"))+
+  geom_line(aes(y = Dänemark_, colour = "Dänemark"))+
+  geom_line(aes(y = Finnland_, colour = "Finnland"))+
+  geom_line(aes(y = Frankreich_, colour = "Frankreich"))+
+  geom_line(aes(y = Ungarn_, colour = "Ungarn"))+
+  geom_line(aes(y = Irland_, colour = "Irland"))+
+  geom_line(aes(y = Italien_, colour = "Italien"))+
+labs(x="Zeit", y="Spending pro Person in USD", col="Land")+
+scale_x_continuous(breaks = unique(PrognoseTabelleSp$Zeit_))+
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))  
+```
+
+

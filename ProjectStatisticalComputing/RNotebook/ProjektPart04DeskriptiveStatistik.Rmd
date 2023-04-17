@@ -1,0 +1,70 @@
+---
+title: "Anhang 4. Projekt DLBDBSC01"
+date: 2023-04-12
+output: html_notebook
+---
+Regressionsanalyse
+Enviroment: RData02 
+Lineare Regresion für unabhängige Variable "Zeit" und abhängige Variable "SpendingProPerson" für top-10 Länder berechnen, Darstellung der Werte in Plot
+```{r}
+lm.spending<-lm(Arbeitstabelle_top_10$SpendingProPerson~Arbeitstabelle_top_10$Zeit)
+plot(Arbeitstabelle_top_10$Zeit, Arbeitstabelle_top_10$SpendingProPerson, ylab="Spending pro Person", xlab="Zeit")
+```
+Lineare Regresion für unabhängige Variable "Zeit" und abhängige Variable "InternetAnteil" für top-10 Länder berechnen, Darstellung der Werte in Plot
+```{r}
+lm.internet<-lm(Arbeitstabelle_top_10$InternetAnteil~Arbeitstabelle_top_10$Zeit)
+plot(Arbeitstabelle_top_10$Zeit, Arbeitstabelle_top_10$InternetAnteil, ylab="Anteil von Internet", xlab="Zeit")
+```
+Zusammenfassung
+```{r}
+summary(Arbeitstabelle_top_10)
+```
+Grafische Darstellungen top-10 Länder inklusive Deutschland
+```{r}
+library(ggplot2)
+library(RColorBrewer)
+
+df <- Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<21 | Arbeitstabelle_top_10$LocationNum>21,c("SpendingProPerson", "ZeitNum","Zeit", "LocationNum", "Location" )]
+
+ggplot(df, aes(x = Zeit, y = SpendingProPerson, group = Location, col = Location))+
+geom_line()+
+labs(x="Zeit", y="Ausgaben pro Einwohner pro Jahr in USD", col="Land")
+```
+
+```{r}
+library(ggplot2)
+library(RColorBrewer)
+df <- Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<21 | Arbeitstabelle_top_10$LocationNum>21,c("InternetAnteil", "ZeitNum","Zeit", "LocationNum", "Location" )]
+ggplot(df, aes(x = Zeit, y = InternetAnteil, group = Location, col = Location))+
+geom_line()+
+labs(x="Zeit", y="Internet-Anteil in %", col="Land")
+```
+Berechnen der Parameter der Linearen Regression
+Erstellen neuer Dataframe 
+```{r}
+Arbeitstabelle_AUT_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=2, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_BEL_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=3 & Arbeitstabelle_top_10$LocationNum>2, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_CZE_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=11 & Arbeitstabelle_top_10$LocationNum>3, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_DEU_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=12 & Arbeitstabelle_top_10$LocationNum>11, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_DNK_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=13 & Arbeitstabelle_top_10$LocationNum>12, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_FIN_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=18 & Arbeitstabelle_top_10$LocationNum>13, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_FRA_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=19 & Arbeitstabelle_top_10$LocationNum>18, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_GRC_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=21 & Arbeitstabelle_top_10$LocationNum>19, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_HUN_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=22 & Arbeitstabelle_top_10$LocationNum>21, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_IRL_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=25 & Arbeitstabelle_top_10$LocationNum>22, c("ZeitNum","SpendingProPerson")]
+Arbeitstabelle_ITA_Sp<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=28 & Arbeitstabelle_top_10$LocationNum>25, c("ZeitNum","SpendingProPerson")]
+```
+
+```{r}
+Arbeitstabelle_AUT_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=2, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_BEL_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=3 & Arbeitstabelle_top_10$LocationNum>2, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_CZE_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=11 & Arbeitstabelle_top_10$LocationNum>3, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_DEU_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=12 & Arbeitstabelle_top_10$LocationNum>11, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_DNK_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=13 & Arbeitstabelle_top_10$LocationNum>12, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_FIN_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=18 & Arbeitstabelle_top_10$LocationNum>13, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_FRA_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=19 & Arbeitstabelle_top_10$LocationNum>18, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_GRC_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=21 & Arbeitstabelle_top_10$LocationNum>19, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_HUN_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=22 & Arbeitstabelle_top_10$LocationNum>21, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_IRL_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=25 & Arbeitstabelle_top_10$LocationNum>22, c("ZeitNum","sqrt_InternetAnteil")]
+Arbeitstabelle_ITA_In<-Arbeitstabelle_top_10[Arbeitstabelle_top_10$LocationNum<=28 & Arbeitstabelle_top_10$LocationNum>25, c("ZeitNum","sqrt_InternetAnteil")]
+```

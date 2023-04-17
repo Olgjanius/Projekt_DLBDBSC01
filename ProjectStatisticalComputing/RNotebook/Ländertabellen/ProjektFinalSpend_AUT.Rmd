@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land AUT erstellen
+```{r}
+glm.AUT_Spend<-glm(Arbeitstabelle_AUT_Sp$SpendingProPerson~Arbeitstabelle_AUT_Sp$ZeitNum)
+plot( Arbeitstabelle_AUT_Sp$ZeitNum,Arbeitstabelle_AUT_Sp$SpendingProPerson)
+abline(glm.AUT_Spend)
+summary(glm.AUT_Spend)
+segments(Arbeitstabelle_AUT_Sp$ZeitNum,fitted(glm.AUT_Spend), Arbeitstabelle_AUT_Sp$ZeitNum,Arbeitstabelle_AUT_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+AUTSpendingProPerson_18<-1559.614+63.58*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=AUTSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_AUT_Sp<-rbind(Arbeitstabelle_AUT_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+AUTSpendingProPerson_19<-1559.614+63.58*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=AUTSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_AUT_Sp<-rbind(Arbeitstabelle_AUT_Sp, new_row_sp19)
+```

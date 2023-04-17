@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land DEU erstellen
+```{r}
+glm.DEU_Spend<-glm(Arbeitstabelle_DEU_Sp$SpendingProPerson~Arbeitstabelle_DEU_Sp$ZeitNum)
+plot( Arbeitstabelle_DEU_Sp$ZeitNum,Arbeitstabelle_DEU_Sp$SpendingProPerson)
+abline(glm.DEU_Spend)
+summary(glm.DEU_Spend)
+segments(Arbeitstabelle_DEU_Sp$ZeitNum,fitted(glm.DEU_Spend), Arbeitstabelle_DEU_Sp$ZeitNum,Arbeitstabelle_DEU_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+DEUSpendingProPerson_18<-5883.11+254.49*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=DEUSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_DEU_Sp<-rbind(Arbeitstabelle_DEU_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+DEUSpendingProPerson_19<-5883.11+254.49*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=DEUSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_DEU_Sp<-rbind(Arbeitstabelle_DEU_Sp, new_row_sp19)
+```

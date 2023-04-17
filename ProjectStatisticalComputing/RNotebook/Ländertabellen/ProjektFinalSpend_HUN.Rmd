@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land HUN erstellen
+```{r}
+glm.HUN_Spend<-glm(Arbeitstabelle_HUN_Sp$SpendingProPerson~Arbeitstabelle_HUN_Sp$ZeitNum)
+plot( Arbeitstabelle_HUN_Sp$ZeitNum,Arbeitstabelle_HUN_Sp$SpendingProPerson)
+abline(glm.HUN_Spend)
+summary(glm.HUN_Spend)
+segments(Arbeitstabelle_HUN_Sp$ZeitNum,fitted(glm.HUN_Spend), Arbeitstabelle_HUN_Sp$ZeitNum,Arbeitstabelle_HUN_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+HUNSpendingProPerson_18<-1167.26+53.811*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=HUNSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_HUN_Sp<-rbind(Arbeitstabelle_HUN_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+HUNSpendingProPerson_19<-1167.26+53.811*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=HUNSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_HUN_Sp<-rbind(Arbeitstabelle_HUN_Sp, new_row_sp19)
+```

@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land ITA erstellen
+```{r}
+glm.ITA_Spend<-glm(Arbeitstabelle_ITA_Sp$SpendingProPerson~Arbeitstabelle_ITA_Sp$ZeitNum)
+plot( Arbeitstabelle_ITA_Sp$ZeitNum,Arbeitstabelle_ITA_Sp$SpendingProPerson)
+abline(glm.ITA_Spend)
+summary(glm.ITA_Spend)
+segments(Arbeitstabelle_ITA_Sp$ZeitNum,fitted(glm.ITA_Spend), Arbeitstabelle_ITA_Sp$ZeitNum,Arbeitstabelle_ITA_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+ITASpendingProPerson_18<-4814.8+111.82*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=ITASpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_ITA_Sp<-rbind(Arbeitstabelle_ITA_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+ITASpendingProPerson_19<-4814.8+111.82*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=ITASpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_ITA_Sp<-rbind(Arbeitstabelle_ITA_Sp, new_row_sp19)
+```

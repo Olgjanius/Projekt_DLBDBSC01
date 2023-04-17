@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land DNK erstellen
+```{r}
+glm.DNK_Spend<-glm(Arbeitstabelle_DNK_Sp$SpendingProPerson~Arbeitstabelle_DNK_Sp$ZeitNum)
+plot( Arbeitstabelle_DNK_Sp$ZeitNum,Arbeitstabelle_DNK_Sp$SpendingProPerson)
+abline(glm.DNK_Spend)
+summary(glm.DNK_Spend)
+segments(Arbeitstabelle_DNK_Sp$ZeitNum,fitted(glm.DNK_Spend), Arbeitstabelle_DNK_Sp$ZeitNum,Arbeitstabelle_DNK_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+DNKSpendingProPerson_18<-669.850+30.223*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=DNKSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_DNK_Sp<-rbind(Arbeitstabelle_DNK_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+DNKSpendingProPerson_19<-669.850+30.223*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=DNKSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_DNK_Sp<-rbind(Arbeitstabelle_DNK_Sp, new_row_sp19)
+```

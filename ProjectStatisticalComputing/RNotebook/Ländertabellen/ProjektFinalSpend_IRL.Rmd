@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Generalisiertes lineares Modell für das Land IRL erstellen
+```{r}
+glm.IRL_Spend<-glm(Arbeitstabelle_IRL_Sp$SpendingProPerson~Arbeitstabelle_IRL_Sp$ZeitNum)
+plot( Arbeitstabelle_IRL_Sp$ZeitNum,Arbeitstabelle_IRL_Sp$SpendingProPerson)
+abline(glm.IRL_Spend)
+summary(glm.IRL_Spend)
+segments(Arbeitstabelle_IRL_Sp$ZeitNum,fitted(glm.IRL_Spend), Arbeitstabelle_IRL_Sp$ZeitNum,Arbeitstabelle_IRL_Sp$SpendingProPerson)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=18 (entspricht 2022)
+```{r}
+IRLSpendingProPerson_18<-661.67+14.22*18
+new_row_sp18<-data.frame(ZeitNum=18, SpendingProPerson=IRLSpendingProPerson_18)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_IRL_Sp<-rbind(Arbeitstabelle_IRL_Sp, new_row_sp18)
+```
+Prognose mit manuellem Berechnen des Wertes für ZeitNum=19 (entspricht 2023)
+```{r}
+IRLSpendingProPerson_19<-661.67+14.22*19
+new_row_sp19<-data.frame(ZeitNum=19, SpendingProPerson=IRLSpendingProPerson_19)
+# Neue Zeilen in die Arbeitstabelle einbinden
+Arbeitstabelle_IRL_Sp<-rbind(Arbeitstabelle_IRL_Sp, new_row_sp19)
+```
